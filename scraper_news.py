@@ -28,3 +28,17 @@ class NewsScraper:
 
         # create data directory if it doesn't exist
         os.makedirs(self.data_dir, exist_ok=True)
+    def save_article(self, article):
+        """Save the article data to a date-based JSON lines file."""
+        
+        # Create date-based filename
+        date_str = article['date']
+        filepath = os.path.join(self.data_dir, f"{date_str}.jsonl")
+
+        # save article as a new line in the JSON file
+        with open(filepath, 'a', encoding='utf-8') as f:
+            json.dump(article, f, ensure_ascii=False)
+            f.write('\n')
+
+        print(f"    saved article: {filepath}")
+        self.articles_scraped += 1
