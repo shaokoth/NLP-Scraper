@@ -131,3 +131,20 @@ def plot_companies_per_day(df, output="results/img/companies_per_day.png"):
     plt.savefig(output, dpi=300)
     plt.close()
     print(f"Saved: {output}")
+
+def plot_sentiment_per_day(df, output="results/img/sentiment_per_day.png"):
+    df["sentiment_label"] = df["sentiment"].apply(classify_sentiment)
+
+    pivot = df.groupby(["day", "sentiment_label"]).size().unstack(fill_value=0)
+    pivot = pivot[["Positive", "Negative"]]  # focus only on strong sentiment
+
+    plt.figure()
+    pivot.plot(kind="bar", color=[POS_COLOR, NEG_COLOR])
+    plt.title("Positive vs Negative Sentiment Per Day")
+    plt.xlabel("Date")
+    plt.ylabel("Article Count")
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.savefig(output, dpi=300)
+    plt.close()
+    print(f"Saved: {output}")
