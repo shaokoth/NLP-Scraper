@@ -86,3 +86,17 @@ def configure_date_axis():
     plt.gca().xaxis.set_major_locator(mdates.DayLocator())
     plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%b %d"))
     plt.xticks(rotation=45, ha="right")
+
+def plot_articles_per_day(df, output="results/img/articles_per_day.png"):
+    counts = df.groupby("day").size()
+
+    plt.figure()
+    plt.plot(counts.index, counts.values, marker="o", linewidth=2, color=PRIMARY_COLOR)
+    plt.title("Daily Article Count")
+    plt.xlabel("Date")
+    plt.ylabel("Number of Articles")
+    configure_date_axis()
+    plt.tight_layout()
+    plt.savefig(output, dpi=300)
+    plt.close()
+    print(f"Saved: {output}")
