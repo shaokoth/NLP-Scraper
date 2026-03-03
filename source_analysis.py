@@ -207,3 +207,26 @@ def plot_topic_distribution(df, output="results/img/topic_distribution.png"):
     plt.savefig(output, dpi=300)
     plt.close()
     print(f"Saved: {output}")
+
+# ------------------------------------------------------------
+# MAIN ENTRY
+# ------------------------------------------------------------
+def main():
+    if not os.path.exists("results/img"):
+        os.makedirs("results/img")
+
+    df = load_enriched_data()
+    if df is None:
+        return
+
+    plot_articles_per_day(df.copy())
+    plot_topics_per_day(df.copy())
+    plot_companies_per_day(df.copy())
+    plot_sentiment_per_day(df.copy())
+    plot_top_companies(df.copy())
+    plot_sentiment_per_company(df.copy())
+    plot_topic_distribution(df.copy())
+
+
+if __name__ == "__main__":
+    main()
