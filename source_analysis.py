@@ -115,3 +115,19 @@ def plot_topics_per_day(df, output="results/img/topics_per_day.png"):
     plt.savefig(output, dpi=300)
     plt.close()
     print(f"Saved: {output}")
+
+def plot_companies_per_day(df, output="results/img/companies_per_day.png"):
+    df["org"] = df["org"].apply(normalize_organizations)
+    exploded = df.explode("org")
+    counts = exploded.groupby("day")["org"].nunique()
+
+    plt.figure()
+    plt.plot(counts.index, counts.values, marker="o", color=THIRD_COLOR, linewidth=2)
+    plt.title("Unique Companies Mentioned Per Day")
+    plt.xlabel("Date")
+    plt.ylabel("Unique Company Count")
+    configure_date_axis()
+    plt.tight_layout()
+    plt.savefig(output, dpi=300)
+    plt.close()
+    print(f"Saved: {output}")
