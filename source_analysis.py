@@ -148,3 +148,19 @@ def plot_sentiment_per_day(df, output="results/img/sentiment_per_day.png"):
     plt.savefig(output, dpi=300)
     plt.close()
     print(f"Saved: {output}")
+
+def plot_top_companies(df, output="results/img/top_companies.png", top_n=20):
+    df["org"] = df["org"].apply(normalize_organizations)
+    exploded = df.explode("org")
+    exploded = exploded[exploded["org"].str.strip() != ""]
+
+    counts = exploded["org"].value_counts().head(top_n)
+
+    plt.figure()
+    counts.sort_values().plot(kind="barh", color=PRIMARY_COLOR)
+    plt.title(f"Top {top_n} Most Mentioned Companies")
+    plt.xlabel("Mentions")
+    plt.tight_layout()
+    plt.savefig(output, dpi=300)
+    plt.close()
+    print(f"Saved: {output}")
