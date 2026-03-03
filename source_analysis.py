@@ -40,3 +40,31 @@ def load_enriched_data(filepath="results/enhanced_news.csv"):
     df["day"] = df["date"].dt.date
 
     return df
+
+# ------------------------------------------------------------
+# NORMALIZATION
+# ------------------------------------------------------------
+def normalize_organizations(org_list):
+    if not isinstance(org_list, list):
+        return []
+
+    normalized = []
+    for org in org_list:
+        if not isinstance(org, str):
+            continue
+
+        org = org.strip()
+
+        # BBC normalization
+        if org.startswith(("BBC News", "BBC Sport", "BBC Radio", "BBC")):
+            normalized.append("BBC")
+            continue
+
+        # PSG/Paris Saint-Germain example
+        if org.lower() in ["psg", "paris saint-germain"]:
+            normalized.append("Paris Saint-Germain")
+            continue
+
+        normalized.append(org)
+
+    return list(set(normalized))
