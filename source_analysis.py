@@ -164,3 +164,22 @@ def plot_top_companies(df, output="results/img/top_companies.png", top_n=20):
     plt.savefig(output, dpi=300)
     plt.close()
     print(f"Saved: {output}")
+
+
+def plot_sentiment_per_company(df, output="results/img/sentiment_per_company.png", top_n=10):
+    df["org"] = df["org"].apply(normalize_organizations)
+    exploded = df.explode("org")
+
+    top_companies = exploded["org"].value_counts().head(top_n).index
+    subset = exploded[exploded["org"].isin(top_companies)]
+
+    sentiment_avg = subset.groupby("org")["sentiment"].mean().sort_values()
+
+    plt.figure()
+    sentiment_avg.plot(kind="barh", color=SECONDARY_COLOR)
+    plt.title(f"Average Sentiment for Top {top_n} Companies")
+    plt.xlabel("Sentiment Score")
+    plt.tight_layout()
+    plt.savefig(output, dpi=300)
+    plt.close()
+    print(f"Saved: {output}")
