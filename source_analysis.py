@@ -68,3 +68,13 @@ def normalize_organizations(org_list):
         normalized.append(org)
 
     return list(set(normalized))
+# ------------------------------------------------------------
+# SENTIMENT CLASSIFICATION
+# ------------------------------------------------------------
+def classify_sentiment(score):
+    if score >= 0.05:
+        return "Positive"
+    elif score <= -0.05:
+        return "Negative"
+    else:
+        return "Neutral"
